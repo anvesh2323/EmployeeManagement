@@ -1,0 +1,11 @@
+li.listWithoutBullets {
+  list-style-type: none;
+}
+
+div.sideBYside {
+  color: black;
+  float: left;
+  width: 30%;
+  padding: 1.5%;
+  border: 1px solid black;
+}
