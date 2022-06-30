@@ -14,7 +14,7 @@ import json
 # import simplejson
 import psycopg2
 
-class Teacher(dict):     # Derived Class from Dictionary Base class
+class Teacher(dict):     # Derived Class from Dictionary (acts as a Base class)
     def __init__(self,id, name, gender, dob, address, note):
         dict.__init__(self, id = id, name = name, gender = gender, dob = dob,  address = address, note = note)
 
@@ -121,22 +121,29 @@ def AddItem():
     # print(type(teacher_data_json["id"]))
     # print("Hi", teacher_data_json["id"], teacher_data_json["name"], teacher_data_json["address"], teacher_data_json["dob"])
 
-    query = f"INSERT INTO teachers(name, gender, dob, address, note) values ({teacher_data_json['name']}, {teacher_data_json['gender']}, {teacher_data_json['dob']}, {teacher_data_json['address']}, {teacher_data_json['note']} ); "
-    curr.execute(query)
+    query = f"INSERT INTO teachers(name, gender, dob, address, note) values ('{teacher_data_json['name']}', '{teacher_data_json['gender']}', '{teacher_data_json['dob']}', '{teacher_data_json['address']}', '{teacher_data_json['note']}' ); "
+    # curr.execute(query)
     # curr.execute('INSERT INTO teachers (name, gender, dob, address, note) '
     #              'values (%s, %s, %s, %s, %s);', 
     #              (teacher_data_json["name"], teacher_data_json["gender"], teacher_data_json["dob"], teacher_data_json["address"], teacher_data_json["note"])
     #             )
 
+    print("query = ", query)
+
     try:
         curr.execute(query)
-    except Exception:
+        print('Try block')
+    except Exception as ex:
         print("Execution Failed")
+        print(ex)
         response = jsonify()
         response.headers.add('Access-Control-Allow-Origin','http://localhost:3000')
         response.status_code = 424
+        conn.commit()
         return response
 
+
+    print("After Try")
     conn.commit()
     
     print(teacher_data_json)
@@ -192,7 +199,10 @@ def updateListItem():
 
     conn.commit()
 
-    return "", 204
+    response = jsonify()
+    response.headers.add('Access-Content-Allow-Origin', 'http://localhost:3000')
+    response.status_code = 204
+    return response
 
 @app.route("/allCartItems")
 def allCartItems():
