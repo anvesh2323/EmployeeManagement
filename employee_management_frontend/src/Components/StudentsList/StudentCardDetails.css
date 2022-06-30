@@ -1,0 +1,26 @@
+.student_data {
+  overflow: scroll;
+  background-color: thistle;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  min-width: 400px;
+  height: 30px;
+  padding: 5px;
+  /* align-content: center; */
+}
+
+.student_name,
+.student_dob,
+.student_gender {
+  width: 100%;
+  overflow: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: aqua;
+  border: 10px;
+  border-color: black;
+}

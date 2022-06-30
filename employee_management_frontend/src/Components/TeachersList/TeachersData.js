@@ -1,5 +1,5 @@
 // import Card from 'react-bootstrap/Card';
-import MyCard from "../UI/MyCard";
+// import MyCard from "../UI/MyCard";
 import classes from "./TeachersData.module.css";
 
 function TeachersData(props) {

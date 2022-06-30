@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import MainNavigation from "./Components/Layout/MainNavigation";
 import ListOfTeachers from "./pages/ListOfTeachers";
 import MainPage from "./pages/MainPage";
+import ListOfStudents from "./pages/ListOfStudents";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
 
         <Route path="/students">
           <h1>Students</h1>
+          <ListOfStudents />
         </Route>
 
         <Route path="/login">

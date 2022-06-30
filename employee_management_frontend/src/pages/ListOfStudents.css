@@ -1,0 +1,21 @@
+.students {
+  background-color: wheat;
+}
+
+.students_container {
+  margin: 5%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: whitesmoke;
+
+  overflow: scroll;
+}
+
+.student_list {
+  list-style-type: number;
+  /* background-color: green; */
+  margin: 6px;
+  /* justify-content: center; */
+}

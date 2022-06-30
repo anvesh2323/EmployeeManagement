@@ -49,13 +49,6 @@ function ListOfTeachers() {
       });
   }, []);
 
-  const [needToAddTeacher, setAddTeacher] = useState(false);
-
-  const AddTeacherHandler = () => {
-    setAddTeacher(true);
-    initializeBackDrop();
-  };
-
   // function FetchDataHandler(){
   //     fetch('http://localhost:5001/cartItems').then(
   //         (response) => {
@@ -77,7 +70,14 @@ function ListOfTeachers() {
   //     });
   // }
 
+  const [needToAddTeacher, setAddTeacher] = useState(false);
   const [activateBackdropNow, activateBackdrop] = useState(true);
+
+  const AddTeacherHandler = () => {
+    console.log("Add teacher");
+    setAddTeacher(true);
+    initializeBackDrop();
+  };
 
   function initializeBackDrop() {
     activateBackdrop(true);
@@ -91,20 +91,16 @@ function ListOfTeachers() {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        {/* <button >
-                    <a href='http://localhost:3000/teachers/addteacher/'>
-                        <AddTeacher/>
-                        Add
-                    </a>
-                </button> */}
         <button onClick={AddTeacherHandler}>Add</button>
 
         {needToAddTeacher && activateBackdropNow ? (
-          <Backdrop onCancel={RemoveBackDrop} />
+          <Backdrop onCancel={RemoveBackDrop}>
+            <AddTeacher onCancel={RemoveBackDrop} />
+          </Backdrop>
         ) : null}
-        {needToAddTeacher && activateBackdropNow ? (
-          <AddTeacher onClick={RemoveBackDrop} />
-        ) : null}
+        {/* {needToAddTeacher && activateBackdropNow ? (
+          <AddTeacher onCancel={RemoveBackDrop} />
+        ) : null} */}
         {/* {needToAddTeacher === true ? <AddTeacher onClick = {RemoveBackDrop} /> : null} */}
       </div>
       <div>

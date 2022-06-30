@@ -3,7 +3,7 @@ import classes from "./AddTeacher.module.css";
 // import { useState } from "react";
 // import Backdrop from "../Components/UI/BackDrop";
 
-function AddTeacher() {
+function AddTeacher(props) {
   // const [activateBackdropNow, activateBackdrop] = useState(false);
 
   // function addBackDrop(){
@@ -16,7 +16,7 @@ function AddTeacher() {
 
   function AddTeacherDataHandler(teacherData) {
     console.log("NOTE = ", teacherData["note"]);
-    if (teacherData["note"] == "") {
+    if (teacherData["note"] === "") {
       teacherData["note"] = "null";
     }
 
@@ -32,7 +32,10 @@ function AddTeacher() {
     <div className={classes.modal}>
       <h1>Add New Teacher Details:</h1>
 
-      <AddTeacherForm addTeacherData={AddTeacherDataHandler} />
+      <AddTeacherForm
+        onCancel={props.onCancel}
+        addTeacherData={AddTeacherDataHandler}
+      />
     </div>
   );
 }

@@ -1,0 +1,39 @@
+.nav {
+  background-color: aqua;
+  justify-content: center;
+  /* float: left; */
+}
+.navbar {
+  /* display: flex; */
+  /* flex-direction: column; */
+  background-color: darkgray;
+  padding: 10px;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 5px;
+}
+
+.links_in {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  /* display: flex; */
+  /* padding: auto; */
+  /* margin-left: 5px;
+  margin-right: 5px;
+  float: left; */
+  /* flex-direction: row; */
+}
+
+.links_out {
+  /* list-style-type: none; */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: yellow;
+  /* display: flex; */
+}

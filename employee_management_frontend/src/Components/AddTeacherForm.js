@@ -74,7 +74,7 @@ function AddTeacherForm(props) {
         </div>
         <p />
 
-        <button>Cancel</button>
+        <button onClick={props.onCancel}>Cancel</button>
         <button onClick={submitHandler}>Submit</button>
       </form>
     </>
