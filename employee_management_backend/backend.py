@@ -58,8 +58,9 @@ def helloword():
 @app.route("/cartItems")
 def CartItems():
     sqlQuery = 'SELECT * from teachers;'
-    obj = ResponseUtil()
-    teacher = obj.executeGET(sqlQuery) # returns TUPLE
+    query_obj = QueryUtil()
+    returned_query_data = query_obj.executeGET(sqlQuery) # returns TUPLE
+    teacher = returned_query_data[0] 
     teacher_obj = []  # to store the teacher TUPLE interms of LIST
     for i in range(len(teacher)):
         teacher_obj.append(Teacher(teacher[i][0], teacher[i][1], teacher[i][2], teacher[i][3], teacher[i][4], teacher[i][5]))
@@ -67,7 +68,8 @@ def CartItems():
     print("\n--------------------")
     print("CartItems")
     print("--------------------\n")
-    return obj.ResponseGET(teacher_obj)
+    response_obj = ResponseUtil()
+    return response_obj.Response(teacher_obj, returned_query_data[1])
 
     
 
@@ -80,9 +82,10 @@ def AddItem():
     teacher_data_json = json.loads(teacher_data)  # converting the string into JSON (since "data" is in json format)
     query = f"INSERT INTO teachers(name, gender, dob, address, note) values ('{teacher_data_json['name']}', '{teacher_data_json['gender']}', '{teacher_data_json['dob']}', '{teacher_data_json['address']}', '{teacher_data_json['note']}' ); "
 
-    obj = ResponseUtil()
-    obj.executePOSTput(query)
-    return obj.ResponsePostPut()
+    query_obj = QueryUtil()
+    returned_query_data = query_obj.executePOSTput(query)
+    response_obj = ResponseUtil()
+    return response_obj.Response([],returned_query_data[1])
 
 """
 
