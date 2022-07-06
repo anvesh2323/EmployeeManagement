@@ -2,6 +2,7 @@
 # from re import T
 # from types import MethodType
 from http.client import responses
+import imp
 from itertools import tee
 import re
 from unicodedata import name
@@ -13,6 +14,10 @@ from flask import request;
 import json
 # import simplejson
 import psycopg2
+from getResponse import ResponseUtil
+from queryExecute import QueryUtil
+
+
 
 class Teacher(dict):     # Derived Class from Dictionary (acts as a Base class)
     def __init__(self,id, name, gender, dob, address, note):
@@ -26,16 +31,6 @@ class Teacher(dict):     # Derived Class from Dictionary (acts as a Base class)
     # def change(self, id):
     #     self["id"] = id
 
-
-
-conn = psycopg2.connect(
-    host = 'localhost',
-    database = 'teachersdata',
-    user = 'postgres',
-    password = 'post@66'
-)
-
-curr = conn.cursor()
 
 # curr.execute('DROP TABLE IF EXISTS teachers;')
 # curr.execute('DROP TABLE IF EXISTS teaching_details;')
@@ -62,46 +57,21 @@ def helloword():
 
 @app.route("/cartItems")
 def CartItems():
-    curr.execute('SELECT * from teachers;')
-    teacher = curr.fetchall()
-
-    # teacher2 = curr.fetchmany(size=2)  
-    if(len(teacher) == 0):
-        print("There are no teachers in the list... Lets add them??")
-        response = jsonify()
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-        response.status_code = 204
-        return response
-
-    teacher_obj = []
+    sqlQuery = 'SELECT * from teachers;'
+    query_obj = QueryUtil()
+    returned_query_data = query_obj.executeGET(sqlQuery) # returns TUPLE
+    teacher = returned_query_data[0] 
+    teacher_obj = []  # to store the teacher TUPLE interms of LIST
     for i in range(len(teacher)):
         teacher_obj.append(Teacher(teacher[i][0], teacher[i][1], teacher[i][2], teacher[i][3], teacher[i][4], teacher[i][5]))
-
-    # print(teacher_obj) # prints dictonary
-
-    # teacher_obj.change(23)  // member function
-
-    # print(teacher_obj) # prints dictonary
     
-    # response  = json.dumps(teacher_obj)
-    response = jsonify(teacher_obj)
+    print("\n--------------------")
+    print("CartItems")
+    print("--------------------\n")
+    response_obj = ResponseUtil()
+    return response_obj.Response(teacher_obj, returned_query_data[1])
+
     
-    # print("hi")
-
-
-    # print(response.headers)
-    # print(type(response))
-    # print(response)
-    
-    response.headers.add('Access-Control-Allow-Origin','http://localhost:3000')
-
-    # print(response)
-    # print(response.headers)
-    # print(response.data)
-    response.status_code = 200
-
-    # response.add(status= 200)
-    return response
 
 
 @app.route("/addItem", methods = ["POST"])
@@ -109,53 +79,15 @@ def AddItem():
     data = request.get_data()   # receives the data sent by the user (here we received data from the Body) 
 
     teacher_data = request.data.decode('UTF-8')  # initialy "data" will be in Binary, here we will be converting it to String
-
-    # for i, x in enumerate(teacher_data):
-    #     print(x, i)
-
     teacher_data_json = json.loads(teacher_data)  # converting the string into JSON (since "data" is in json format)
-
-    print("DATA")
-    print(teacher_data_json)
-
-    # print(type(teacher_data_json["id"]))
-    # print("Hi", teacher_data_json["id"], teacher_data_json["name"], teacher_data_json["address"], teacher_data_json["dob"])
-
     query = f"INSERT INTO teachers(name, gender, dob, address, note) values ('{teacher_data_json['name']}', '{teacher_data_json['gender']}', '{teacher_data_json['dob']}', '{teacher_data_json['address']}', '{teacher_data_json['note']}' ); "
-    # curr.execute(query)
-    # curr.execute('INSERT INTO teachers (name, gender, dob, address, note) '
-    #              'values (%s, %s, %s, %s, %s);', 
-    #              (teacher_data_json["name"], teacher_data_json["gender"], teacher_data_json["dob"], teacher_data_json["address"], teacher_data_json["note"])
-    #             )
 
-    print("query = ", query)
+    query_obj = QueryUtil()
+    returned_query_data = query_obj.executePOSTput(query)
+    response_obj = ResponseUtil()
+    return response_obj.Response([],returned_query_data[1])
 
-    try:
-        curr.execute(query)
-        print('Try block')
-    except Exception as ex:
-        print("Execution Failed")
-        print(ex)
-        response = jsonify()
-        response.headers.add('Access-Control-Allow-Origin','http://localhost:3000')
-        response.status_code = 424
-        conn.commit()
-        return response
-
-
-    print("After Try")
-    conn.commit()
-    
-    print(teacher_data_json)
-    # print(type(request.data.decode('UTF-8')))
-    # print(data)
-    
-    response = jsonify()
-    response.headers.add('Access-Control-Allow-Origin','http://localhost:3000')
-    response.status_code = 200
-
-    return response
-
+"""
 
 @app.route("/deleteItem", methods = ['DELETE'])
 def deleteItem():
@@ -244,6 +176,9 @@ def searchItem():
 # print(CartItems())
 
 
+
+
+"""
 if __name__ == '__main__':
     app.run(port=5001, host = "0.0.0.0", debug=True)
 
